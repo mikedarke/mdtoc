@@ -1,4 +1,4 @@
-package lib
+package mdtoc
 
 import (
 	"bufio"
@@ -27,6 +27,9 @@ func WriteIndex(indexFilename string, dir string, files []Markdownfile) error {
 	w.WriteString(title)
 	sortByOrder(files)
 	for i := range files {
+		if files[i].parseErr != nil {
+			continue
+		}
 		for j := range files[i].root.subheadings {
 			writeHeading(files[i].root.subheadings[j], files[i], w)
 		}

@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/mikedarke/mdtoc/lib"
+	"github.com/mikedarke/mdtoc/mdtoc"
 )
 
 const (
@@ -14,10 +14,10 @@ func main() {
 	argsWithoutProg := os.Args[1:]
 	dir := argsWithoutProg[0]
 	indexFilename := DEFAULT_INDEX_FILE_NAME
-	markdownFiles := lib.GetMarkdownDocs(dir, []string{indexFilename})
-	documents, err := lib.ParseFiles(markdownFiles, dir)
+	markdownFiles := mdtoc.GetMarkdownDocs(dir, []string{indexFilename})
+	documents, err := mdtoc.ParseFiles(markdownFiles, dir)
 	check(err)
-	err = lib.WriteIndex(indexFilename, dir, documents)
+	err = mdtoc.WriteIndex(indexFilename, dir, documents)
 	check(err)
 }
 
