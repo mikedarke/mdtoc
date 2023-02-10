@@ -1,4 +1,4 @@
-package mdtoc
+package toc
 
 import (
 	"bufio"
@@ -10,20 +10,19 @@ import (
 )
 
 const (
-	DEFAULT_TITLE          string = "Table of contents"
-	SPACES_PER_LEVEL       int    = 4
-	MAX_DISTANCE_TO_ANCHOR int    = 100
+	SPACES_PER_LEVEL       int = 4
+	MAX_DISTANCE_TO_ANCHOR int = 100
 )
 
-func WriteIndex(indexFilename string, dir string, files []Markdownfile) error {
-	path := filepath.Join(dir, indexFilename)
+func WriteIndex(opt Options, files []Markdownfile) error {
+	path := filepath.Join(opt.Directory, opt.Outputfilename)
 	f, err := os.Create(path)
 	defer f.Close()
 	if err != nil {
 		return err
 	}
 	w := bufio.NewWriter(f)
-	title := fmt.Sprintf("# %s  \n", DEFAULT_TITLE)
+	title := fmt.Sprintf("# %s  \n", opt.Title)
 	w.WriteString(title)
 	sortByOrder(files)
 	for i := range files {
@@ -31,7 +30,7 @@ func WriteIndex(indexFilename string, dir string, files []Markdownfile) error {
 			continue
 		}
 		for j := range files[i].root.subheadings {
-			writeHeading(files[i].root.subheadings[j], files[i], w)
+			writeLink(files[i].root.subheadings[j], files[i], w)
 		}
 	}
 	footer := fmt.Sprintf("\n<!-- Generated at %s -->\n", time.Now().Format(time.RFC3339))
@@ -50,7 +49,7 @@ func sortByOrder(files []Markdownfile) {
 	})
 }
 
-func writeHeading(h *Heading, f Markdownfile, w *bufio.Writer) {
+func writeLink(h *Heading, f Markdownfile, w *bufio.Writer) {
 	space := getIndentSpaces(h.depth - 1)
 	w.WriteString(space)
 	url := f.name
@@ -61,7 +60,7 @@ func writeHeading(h *Heading, f Markdownfile, w *bufio.Writer) {
 	link := fmt.Sprintf("[%s](%s)", h.text, url)
 	w.WriteString(fmt.Sprintf("* %s  \n", link))
 	for i := range h.subheadings {
-		writeHeading(h.subheadings[i], f, w)
+		writeLink(h.subheadings[i], f, w)
 	}
 }
 

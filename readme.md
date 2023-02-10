@@ -21,6 +21,15 @@ To provide deep links to sections within each of the files you must specify `<di
 # Main heading
 ```
 
+## Options
+
+The following options allow you to customize the output
+
+| Option | Default Value | Descriptiion                                        |
+| ------ | ------------- | --------------------------------------------------- |
+| o     | index.md      | The output file name to write the table of contents |
+| t     | Table of contents | The title text included at the top of the table of contents |
+
 ## Tasks
 
 These tasks follow [eXeCute](https://github.com/Joe-Davidson1802/xc) syntax, therefore can be ran with `xc [taskname]`.

@@ -1,4 +1,4 @@
-package mdtoc
+package toc
 
 import (
 	"bufio"
